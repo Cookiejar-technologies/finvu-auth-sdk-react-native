@@ -1,0 +1,35 @@
+{
+  "name": "demo-app-rn",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios --device",
+    "web": "expo start --web",
+    "ctpl:login": "npm login --registry=https://npm.pkg.github.com --scope=@cookiejar-technologies",
+    "bundle:android": "mkdir -p android/app/src/main/assets && npx react-native bundle --entry-file index.ts --platform android --dev false --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "bundle:ios": "npx react-native bundle --entry-file index.ts --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
+    "bundle:all": "npm run bundle:android && npm run bundle:ios"
+  },
+  "dependencies": {
+    "@cookiejar-technologies/finvu-auth-sdk-rn": "0.1.5",
+    "@react-navigation/native": "^7.1.17",
+    "@react-navigation/native-stack": "^7.3.25",
+    "expo": "~53.0.20",
+    "expo-status-bar": "~2.2.3",
+    "react": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-webview": "13.13.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@react-native-community/cli": "latest",
+    "@react-native/metro-config": "^0.81.0",
+    "@types/react": "~19.0.10",
+    "typescript": "~5.8.3"
+  },
+  "private": true
+}
