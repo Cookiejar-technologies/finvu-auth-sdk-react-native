@@ -66,7 +66,7 @@ PODS:
   - fast_float (6.1.4)
   - FBLazyVector (0.79.5)
   - FinvuAuthenticationSDK (0.1.0)
-  - FinvuAuthSdkRn (0.1.5):
+  - FinvuAuthSdkRn (1.0.0):
     - ExpoModulesCore
     - FinvuAuthenticationSDK
   - fmt (11.0.2)
@@ -1885,7 +1885,7 @@ DEPENDENCIES:
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
-  - FinvuAuthenticationSDK (from `https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git`, tag `v1.0.1`)
+  - FinvuAuthenticationSDK (from `https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git`, tag `1.0.1`)
   - "FinvuAuthSdkRn (from `../node_modules/@cookiejar-technologies/finvu-auth-sdk-rn/ios`)"
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -1988,7 +1988,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FinvuAuthenticationSDK:
     :git: https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git
-    :tag: v1.0.1
+    :tag: 1.0.1
   FinvuAuthSdkRn:
     :path: "../node_modules/@cookiejar-technologies/finvu-auth-sdk-rn/ios"
   fmt:
@@ -2134,7 +2134,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   FinvuAuthenticationSDK:
     :git: https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git
-    :tag: v1.0.1
+    :tag: 1.0.1
 
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
@@ -2148,8 +2148,8 @@ SPEC CHECKSUMS:
   ExpoModulesCore: 00a1b5c73248465bd0b93f59f8538c4573dac579
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: d2a9cd223302b6c9aa4aa34c1a775e9db609eb52
-  FinvuAuthenticationSDK: 8521a3434d2d147bdd8ee77784f0868677ad032a
-  FinvuAuthSdkRn: 79c5694611cc3c6af56a383a8e1c979227bc1368
+  FinvuAuthenticationSDK: 05fb9f74cd8f590fa3c074219dd65eae67259c3f
+  FinvuAuthSdkRn: 9cfe0f7e4c661613be6d435bb203a3af65ebc8f1
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: f03b0e06d3882d71e67e45b073bb827da1a21aae
@@ -2221,6 +2221,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: adb397651e1c00672c12e9495babca70777e411e
 
-PODFILE CHECKSUM: e3828842e734ed17e1feb22fe8c8466cd7dd293c
+PODFILE CHECKSUM: 7115ad10c1b5c21b5b63c2c0345cfa8139dd3c87
 
 COCOAPODS: 1.16.2

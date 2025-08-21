@@ -5,8 +5,8 @@ import { inputProps, inputStyles, styles } from '../styles/styles';
 import { FinvuAuthEnvironment, FinvuAuthSdkInstance } from '@cookiejar-technologies/finvu-auth-sdk-rn';
 
 export default function NativeViewScreen() {
-    const [requestId, setRequestId] = useState('7260c3c0-bc6e-4003-9295-c9913b9b521f');
-    const [appId, setAppId] = useState('58FI169DV4A0Q4PGMDCR');
+    const [requestId, setRequestId] = useState('');
+    const [appId, setAppId] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
 
     const [initDone, setInitDone] = useState(false);
