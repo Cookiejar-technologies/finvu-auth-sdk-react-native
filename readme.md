@@ -140,7 +140,7 @@ platform :ios, '16.0'
 pod 'FinvuAuthenticationSDK', :git => 'https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git', :tag => 'latest-ios-sdk-version'
 ```
 
-> Note : latest latest-ios-sdk-version is v1.0.1
+> Note : latest latest-ios-sdk-version is 1.0.1
 
 2. Install pods:
 ```bash
