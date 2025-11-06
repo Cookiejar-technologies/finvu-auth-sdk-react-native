@@ -73,7 +73,7 @@ You need a GitHub **Personal Access Token (classic)** with `read:packages` scope
     npm install @cookiejar-technologies/finvu-auth-sdk-rn@latest-react-native-sdk-version
 ```
 
-> Note : latest react-native-sdk-version is 1.0.0
+> Note : latest react-native-sdk-version is 1.0.1
 
 ### Expo Managed Workflow
 
@@ -140,7 +140,7 @@ platform :ios, '16.0'
 pod 'FinvuAuthenticationSDK', :git => 'https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git', :tag => 'latest-ios-sdk-version'
 ```
 
-> Note : latest latest-ios-sdk-version is 1.0.1
+> Note : latest latest-ios-sdk-version is 1.0.2
 
 2. Install pods:
 ```bash
