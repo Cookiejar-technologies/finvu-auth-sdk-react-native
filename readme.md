@@ -1,6 +1,6 @@
 # Finvu Auth SDK — React Native
 
-React Native 0.70+ · iOS 15.1+ · Android API 25+
+React Native 0.70+ · iOS 16.0+ · Android API 25+
 
 Package: `@cookiejar-technologies/finvu-auth-sdk-rn`
 
@@ -8,27 +8,82 @@ Package: `@cookiejar-technologies/finvu-auth-sdk-rn`
 
 ## Installation
 
-**Configure `.npmrc`** to pull from GitHub Packages:
-```
-@cookiejar-technologies:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=YOUR_GITHUB_PAT
-```
-
-**Install:**
 ```bash
-npm install @cookiejar-technologies/finvu-auth-sdk-rn@2.0.16
+npm install @cookiejar-technologies/finvu-auth-sdk-rn@2.0.20
 ```
 
-**Android** — add to `AndroidManifest.xml` inside the `<application>` tag:
+---
+
+## Platform Setup
+
+### Android
+
+#### 1. Add GitHub Packages Repository
+
+Add to your **project-level** `build.gradle` or `settings.gradle.kts`:
+
+```gradle
+maven {
+    url = uri("https://maven.pkg.github.com/Cookiejar-technologies/finvu-auth-sdk-android")
+    credentials {
+        username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+        password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+    }
+}
+```
+
+#### 2. Add GitHub Credentials
+
+Create or edit `~/.gradle/gradle.properties` (do **not** commit this file):
+
+```properties
+gpr.user=YOUR_GITHUB_USERNAME
+gpr.key=YOUR_GITHUB_PAT
+```
+
+> To create a GitHub Personal Access Token (PAT):
+> 1. Go to [GitHub Token Settings](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+> 2. Generate a new token with `read:packages` scope
+> 3. Copy and save it securely
+
+#### 3. Configure Network Security
+
+Add to your `AndroidManifest.xml` inside the `<application>` tag:
+
 ```xml
 <application
     android:networkSecurityConfig="@xml/finvu_silent_network_authentication_network_security_config"
     ...>
 </application>
 ```
-> Required for Silent Network Authentication (SNA).
 
-**iOS** — add to `Info.plist` for Silent Network Authentication:
+> Required for Silent Network Authentication (SNA). [Learn more](https://docs.google.com/document/d/1TQndJJ1IvKAEt5aZxJE-EL156-Zw3e2RfhS7K-NgXHk/edit?usp=sharing)
+
+---
+
+### iOS
+
+#### 1. Update your `Podfile`
+
+```ruby
+platform :ios, '16.0'
+
+# Add Finvu SDK dependency
+pod 'FinvuAuthenticationSDK', :git => 'https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git', :tag => '1.0.3'
+```
+
+> Latest iOS SDK version is `1.0.3`
+
+#### 2. Install pods
+
+```bash
+cd ios && pod install --repo-update
+```
+
+#### 3. Configure `Info.plist`
+
+Add the following for Silent Network Authentication:
+
 ```xml
 <key>NSAppTransportSecurity</key>
 <dict>
@@ -56,10 +111,6 @@ npm install @cookiejar-technologies/finvu-auth-sdk-rn@2.0.16
         </dict>
     </dict>
 </dict>
-```
-
-```bash
-cd ios && pod install --repo-update
 ```
 
 ---
@@ -123,7 +174,5 @@ FinvuAuthSdkInstance.cleanupAll();
 ```
 
 ---
-
-
 
 Need help? Contact support@cookiejar.co.in
