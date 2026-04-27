@@ -16,7 +16,7 @@ Package: `@cookiejar-technologies/finvu-auth-sdk-rn`
 
 **Install:**
 ```bash
-npm install @cookiejar-technologies/finvu-auth-sdk-rn@2.0.1
+npm install @cookiejar-technologies/finvu-auth-sdk-rn@2.0.16
 ```
 
 **Android** — add to `AndroidManifest.xml` inside the `<application>` tag:
