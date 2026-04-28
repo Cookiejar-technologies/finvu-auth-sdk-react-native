@@ -1,5 +1,5 @@
 // src/screens/WebViewScreen.tsx
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, TextInput, Button, Text } from 'react-native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { FinvuAuthenticationWebviewWrapper, FinvuAuthEnvironment } from '@cookiejar-technologies/finvu-auth-sdk-rn';
@@ -9,18 +9,20 @@ const DEFAULT_URL = 'https://reactjssdk.finvu.in/?ecreq=5ze4EGbbbeqYinPf-GZb0LJu
 
 export default function WebViewScreen() {
   const webViewRef = useRef<WebView>(null);
+  const finvuWrapperRef = useRef<FinvuAuthenticationWebviewWrapper | null>(null);
   const [webUrl, setWebUrl] = useState(DEFAULT_URL);
   const [loadedUrl, setLoadedUrl] = useState('');
   const [showWebView, setShowWebView] = useState(false);
 
-  // memoize wrapper so it isn't recreated on every render
-  const finvuWrapper = useMemo(
-    () => new FinvuAuthenticationWebviewWrapper(FinvuAuthEnvironment.DEVELOPMENT),
-    []
-  );
+  useEffect(() => {
+    finvuWrapperRef.current = new FinvuAuthenticationWebviewWrapper(FinvuAuthEnvironment.DEVELOPMENT);
+    return () => {
+      try { finvuWrapperRef.current?.cleanupAll(); } catch {}
+    };
+  }, []);
 
   const handleMessage = (event: WebViewMessageEvent) => {
-    finvuWrapper.handleMessage(event, webViewRef);
+    finvuWrapperRef.current?.handleMessage(event, webViewRef);
   };
 
   const handleLoadWebView = () => {
