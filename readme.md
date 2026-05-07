@@ -1,16 +1,21 @@
 # Finvu Auth SDK — React Native
 
-React Native 0.70+ · iOS 16.0+ · Android API 25+
+**Package:** `@io.github.cookiejar-technologies/finvu-auth-sdk-rn`  
+**Version:** `1.0.0` · **React Native:** 0.70+ · **iOS:** 16.0+ · **Android:** API 25+
 
-Package: `@cookiejar-technologies/finvu-auth-sdk-rn`
+Silent Network Authentication (SNA) SDK for React Native, with WebView bridge support for web-based authentication flows.
+
+> This is a bare React Native module. It works in any bare React Native app. For Expo apps, use a custom development build — **not Expo Go**.
 
 ---
 
 ## Installation
 
 ```bash
-npm install @cookiejar-technologies/finvu-auth-sdk-rn@2.0.20
+npm install @io.github.cookiejar-technologies/finvu-auth-sdk-rn
 ```
+
+No additional native configuration is needed — the SDK is autolinked.
 
 ---
 
@@ -18,37 +23,19 @@ npm install @cookiejar-technologies/finvu-auth-sdk-rn@2.0.20
 
 ### Android
 
-#### 1. Add GitHub Packages Repository
+#### 1. Internet & Network Permissions
 
-Add to your **project-level** `build.gradle` or `settings.gradle.kts`:
+Add to your `AndroidManifest.xml`:
 
-```gradle
-maven {
-    url = uri("https://maven.pkg.github.com/Cookiejar-technologies/finvu-auth-sdk-android")
-    credentials {
-        username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-        password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
-    }
-}
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 ```
 
-#### 2. Add GitHub Credentials
+#### 2. Network Security Config
 
-Create or edit `~/.gradle/gradle.properties` (do **not** commit this file):
-
-```properties
-gpr.user=YOUR_GITHUB_USERNAME
-gpr.key=YOUR_GITHUB_PAT
-```
-
-> To create a GitHub Personal Access Token (PAT):
-> 1. Go to [GitHub Token Settings](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-> 2. Generate a new token with `read:packages` scope
-> 3. Copy and save it securely
-
-#### 3. Configure Network Security
-
-Add to your `AndroidManifest.xml` inside the `<application>` tag:
+Add to your `<application>` tag in `AndroidManifest.xml`:
 
 ```xml
 <application
@@ -57,32 +44,21 @@ Add to your `AndroidManifest.xml` inside the `<application>` tag:
 </application>
 ```
 
-> Required for Silent Network Authentication (SNA). [Learn more](https://docs.google.com/document/d/1TQndJJ1IvKAEt5aZxJE-EL156-Zw3e2RfhS7K-NgXHk/edit?usp=sharing)
+> Required for Silent Network Authentication (SNA) to make carrier-specific HTTP calls.
 
 ---
 
 ### iOS
 
-#### 1. Update your `Podfile`
-
-```ruby
-platform :ios, '16.0'
-
-# Add Finvu SDK dependency
-pod 'FinvuAuthenticationSDK', :git => 'https://github.com/Cookiejar-technologies/finvu-auth-sdk-ios.git', :tag => '1.0.3'
-```
-
-> Latest iOS SDK version is `1.0.3`
-
-#### 2. Install pods
+Run pod install after `npm install`:
 
 ```bash
 cd ios && pod install --repo-update
 ```
 
-#### 3. Configure `Info.plist`
+#### Info.plist — Network Security
 
-Add the following for Silent Network Authentication:
+Add the following to your `Info.plist`:
 
 ```xml
 <key>NSAppTransportSecurity</key>
@@ -117,62 +93,82 @@ Add the following for Silent Network Authentication:
 
 ## Integration
 
-There are two ways to integrate depending on your app type.
-
----
-
 ### Option A — WebView App
 
-Use this if your app renders a web app inside a React Native `WebView`. The SDK handles messages posted by your web app.
+Use this if your app loads a web page inside a React Native `WebView` and the web app drives the authentication flow.
 
-```typescript
-import { useRef } from 'react';
-import { WebView } from 'react-native-webview';
+```tsx
+import React, { useEffect, useRef } from 'react';
+import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import {
   FinvuAuthEnvironment,
   FinvuAuthenticationWebviewWrapper,
-} from '@cookiejar-technologies/finvu-auth-sdk-rn';
+} from '@io.github.cookiejar-technologies/finvu-auth-sdk-rn';
 
-const wrapper = new FinvuAuthenticationWebviewWrapper(FinvuAuthEnvironment.PRODUCTION);
-const webViewRef = useRef(null);
+export default function AuthScreen({ url }: { url: string }) {
+  const webViewRef = useRef<WebView>(null);
+  const wrapperRef = useRef<FinvuAuthenticationWebviewWrapper | null>(null);
 
-<WebView
-  ref={webViewRef}
-  source={{ uri: 'https://your-web-app' }}
-  onMessage={(event) => wrapper.handleMessage(event, webViewRef)}
-/>
+  useEffect(() => {
+    wrapperRef.current = new FinvuAuthenticationWebviewWrapper(
+      FinvuAuthEnvironment.PRODUCTION,  // or DEVELOPMENT
+    );
+    return () => {
+      wrapperRef.current?.cleanupAll();
+    };
+  }, []);
+
+  const handleMessage = (event: WebViewMessageEvent) => {
+    wrapperRef.current?.handleMessage(event, webViewRef);
+  };
+
+  return (
+    <WebView
+      ref={webViewRef}
+      source={{ uri: url }}
+      onMessage={handleMessage}
+      javaScriptEnabled
+    />
+  );
+}
 ```
 
-Your web app communicates with the SDK via `window.ReactNativeWebView.postMessage`.
+Your web app communicates with the SDK by posting messages via `window.ReactNativeWebView.postMessage`.
 
 ---
 
 ### Option B — Native App
 
-Use this if your app handles auth entirely in React Native, without a WebView.
+Use this if your app handles the authentication flow entirely in React Native, without a WebView.
 
 ```typescript
 import {
   FinvuAuthEnvironment,
   FinvuAuthSdkInstance,
-} from '@cookiejar-technologies/finvu-auth-sdk-rn';
+} from '@io.github.cookiejar-technologies/finvu-auth-sdk-rn';
 
 // 1. Setup — call once on mount
 FinvuAuthSdkInstance.setup(FinvuAuthEnvironment.PRODUCTION);
 
-// 2. Init — call with requestId from your backend session
+// 2. Init — call with requestId from your backend
 const initResult = await FinvuAuthSdkInstance.initAuth({
-  requestId: 'REQUEST_ID',
+  requestId: 'YOUR_REQUEST_ID',
 });
 
 // 3. Start SNA — call with the SNA URL returned by your backend
 const authResult = await FinvuAuthSdkInstance.startAuth('SNA_URL');
 // auth complete — use authResult.token
 
-// 4. Cleanup — call when done or user exits the flow
+// 4. Cleanup — call when done or user exits
 FinvuAuthSdkInstance.cleanupAll();
 ```
 
----
 
-Need help? Contact support@cookiejar.co.in
+## Demo App
+
+See [`BareDemoApp/`](./BareDemoApp) for a complete bare React Native working example.
+
+
+## Support
+
+support@cookiejar.co.in · [finvu.in](https://finvu.in)
