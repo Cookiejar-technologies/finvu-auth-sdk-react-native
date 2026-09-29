@@ -1,7 +1,7 @@
 # Finvu Auth SDK — React Native
 
 **Package:** `@io.github.cookiejar-technologies/finvu-auth-sdk-rn`  
-**Version:** `1.0.0` · **React Native:** 0.70+ · **iOS:** 16.0+ · **Android:** API 25+
+**Version:** `1.0.2` · **React Native:** 0.70+ · **iOS:** 15.0+ · **Android:** API 25+
 
 Silent Network Authentication (SNA) SDK for React Native, with WebView bridge support for web-based authentication flows.
 
